@@ -1,0 +1,4 @@
+Resources.md
+node_modules
+.env
+yarn.lock
