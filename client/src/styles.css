@@ -30,10 +30,6 @@ p, h1, h2, h3, h4, h5, h6 {
     overflow-wrap: break-word;
 }
 
-/* App */
-
-
-
 /* Container */
 
 .container {
@@ -43,13 +39,15 @@ p, h1, h2, h3, h4, h5, h6 {
 
 .title {
     text-align: center;
+    font-size: 3rem;
+    padding: 3rem 0 1rem;
 }
 
 .todos {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1 rem;
+    gap: 1rem;
 }
 
 .todo {
@@ -57,4 +55,28 @@ p, h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     padding: 0.5rem 1rem;
     background-color: rgba(0, 0, 0, 0.1);
+    width: 60%;
+    font-size: 1.5rem;
 }
+
+.todo_status {
+    border: none;
+    padding: 0;
+    line-height: 1;
+    cursor: pointer;
+    transition: all .2s;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+/* form */
+
+.form {
+    display: flex;
+    gap: 0.5rem;
+    width: 60%;
+    margin: 1rem auto;
+}
+

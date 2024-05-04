@@ -4,15 +4,15 @@ const table = require("./database");
 
 // Create a todo.
 router.post("/todo", async (req, res) => {
-    const { todo, priority, time } = req.body;
-    const exists = await table.findOne({ todo, priority });
+    const { task, priority, time, status } = req.body;
+    const exists = await table.findOne({ task, priority });
     if (exists) {
         alert("This task is already present")
-        return res.status(404).end({ message: "This task is already present" });
+        return res.status(404).json({ message: "This task is already present" });
     }
-    const newtodo = new table({ todo, priority, time });
+    const newtodo = new table({ task, priority, time, status });
     newtodo.save()
-    .then(() => res.status(200).json({todo:[todo, priority, time], message: "New task added to the system."}))
+    .then((todo) => res.status(200).json({todo, message: "New task added to the system."}))
     .catch(error => res.send(300).json({message: "Failed to add the new task to the system."}))
 });
 

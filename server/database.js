@@ -7,9 +7,9 @@ const uri = env.mongodb_uri;
 mongoose.connect(uri);
 
 const taskschema = {
-    todo: String,
-    priority: Number,
-    time: Number,
+    task: String,
+    priority: String,
+    time: String,
     status: Boolean
 }
 
