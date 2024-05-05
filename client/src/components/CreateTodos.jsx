@@ -53,7 +53,7 @@ export default function CreateTodos() {
         // getTodos();
     // }, []);
     return <main className='flex justify-center items-center flex-col'>
-        <div className="h-16"></div>
+        <div className="h-12"></div>
         <h1 className="text-5xl font-semibold pb-5">TaskMaster</h1>
         <form action="" className="flex w-3/5 justify-around" onSubmit={CreateNewTask}>
 
