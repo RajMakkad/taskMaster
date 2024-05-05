@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const table = require("./database");
+const table = require("../Database/database");
 
 // Create a todo.
 router.post("/todo", async (req, res) => {
