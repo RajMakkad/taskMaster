@@ -22,19 +22,49 @@ export default function ShowTodos() {
         }
     }, []);
 
-    return (
-        <div className="flex flex-col justify-center">
-            {
-                todos?.length > 0 &&
-                todos.map((t) => {
-                    return <div key={t._id} className="flex">
-                        <p>{t.task}</p>
-                        <p>{t.priority}</p>
-                        <p>{t.time}</p>
-                        <button className="todo_status">{t.status ? "☑" : "☐"}</button>
-                    </div>
-                })
-            }
+    return ( 
+        <div className="w-1/2 mx-auto relative overflow-x-auto">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" className="px-6 py-3">
+                            Task
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Priority
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Time
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Mark as completed
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        todos?.length > 0 &&
+                        todos.map((todo) => {
+                            return (
+                                <tr key={todo._id} className="bg-white border-b">
+                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                        {todo.task}
+                                    </th>
+                                    <td className="px-6 py-4">
+                                        {todo.priority}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {todo.time}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {todo.status ? "☑" : "☐"}
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    }
+                </tbody>
+            </table>
         </div>
     )
 }
