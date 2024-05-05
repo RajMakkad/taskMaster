@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { api } from "../utils/Api"
 
 export default function CreateTodos() {
     const [todos, setTodos] = useState([]);
@@ -12,7 +13,7 @@ export default function CreateTodos() {
 
     const CreateNewTask = async (e) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:5000/api/todo", {
+        const response = await fetch(`${api.list}`, {
             method: "POST",
             body: JSON.stringify({
                 task: newTask.task,
@@ -41,17 +42,6 @@ export default function CreateTodos() {
         console.log(newTask);
     }
 
-    // useEffect works as, whenever a option changes inside of the passed array ([option1, option2]) then the passed function will be executed.
-    // When nothing is passed ([]) then the function will run only once at the time of mount, because nothing changes inside an empty array.
-    // useEffect(() => {
-        // const getTodos = async () => {
-        //     const resp = await fetch("http://localhost:5000/api/todos");
-        //     const todos = await resp.json();
-        //     // console.log(todos)
-        //     setTodos(todos.todo);
-        // }
-        // getTodos();
-    // }, []);
     return <main className='flex justify-center items-center flex-col'>
         <div className="h-12"></div>
         <h1 className="text-5xl font-semibold pb-5">TaskMaster</h1>
@@ -114,18 +104,5 @@ export default function CreateTodos() {
 
             <button className="text-white bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center h-fit self-end mb-2.5" type="submit">Create</button>
         </form>
-        {/* <div className="flex flex-col">
-            {
-                todos.length > 0 &&
-                todos.map((t) => {
-                    return <div key={t._id} className="flex flex-row">
-                        <p>{t.task}</p>
-                        <p>{t.priority}</p>
-                        <p>{t.time}</p>
-                        <button className="todo_status">{t.status ? "☑" : "☐"}</button>
-                    </div>
-                })
-            }
-        </div> */}
     </main>
 }

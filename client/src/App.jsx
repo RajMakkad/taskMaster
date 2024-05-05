@@ -9,7 +9,8 @@ export default function App() {
             <BrowserRouter>
                 <Appbar />
                 <Routes>
-                    <Route path="/" element={<CreateTodos />} />
+                    <Route path="/" element={<ShowTodos />} />
+                    <Route path="/createTodo" element={<CreateTodos />} />
                     <Route path="/showTodo" element={<ShowTodos />} />
                     <Route path="/anotherShowTodo" element={<ShowTodos />} />
                 </Routes>
