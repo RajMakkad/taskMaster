@@ -3,7 +3,7 @@ const router = express.Router();
 const table = require("../Database/database");
 
 // Create a todo.
-router.post("/todo", async (req, res) => {
+router.post("/createTodo", async (req, res) => {
     try {
         const { task, priority, time, status } = req.body;
         const exists = await table.findOne({ task, priority });
@@ -27,7 +27,7 @@ router.post("/todo", async (req, res) => {
 // uri = http://localhost:port/api/todo/xyz
 // id => xyz
 // Delete a todo.
-router.delete("/todo/:id", async (req, res) => {
+router.delete("/deleteTodo/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const exists = await table.findOne({ _id: id });
@@ -48,7 +48,7 @@ router.delete("/todo/:id", async (req, res) => {
 });
 
 // Update a todo.
-router.put("/todo/:id", async (req, res) => {
+router.put("/updateTodo/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const exists = await table.findOne({ _id: id });
@@ -82,7 +82,7 @@ router.put("/todo/:id", async (req, res) => {
 })
 
 // Read all the todos.
-router.get("/todos", async (req, res) => {
+router.get("/getAllTodos", async (req, res) => {
     try {
         const todo = await table.find({});
         res.status(200).json({
