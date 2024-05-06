@@ -24,7 +24,7 @@ router.post("/createTodo", async (req, res) => {
 });
 
 // path parameter
-// uri = http://localhost:port/api/todo/xyz
+// uri = http://localhost:port/api/deleteTodo/xyz
 // id => xyz
 // Delete a todo.
 router.delete("/deleteTodo/:id", async (req, res) => {
