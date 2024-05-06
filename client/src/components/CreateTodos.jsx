@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { api } from "../utils/Api"
+import axios from "axios"
 
 export default function CreateTodos() {
     const [todos, setTodos] = useState([]);
@@ -13,21 +14,14 @@ export default function CreateTodos() {
 
     const CreateNewTask = async (e) => {
         e.preventDefault();
-        const response = await fetch(`${api.list}`, {
-            method: "POST",
-            body: JSON.stringify({
-                task: newTask.task,
-                priority: newTask.priority,
-                time: newTask.time,
-                status: newTask.status
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
+        const response = await axios.post(`${api.create}`, {
+            task: newTask.task,
+            priority: newTask.priority,
+            time: newTask.time,
+            status: newTask.status
         });
 
-        const resp = await response.json();
-        // console.log(resp);
+        const resp = response.data;
         setTodos([
             ...todos,
             resp.todo
@@ -101,7 +95,6 @@ export default function CreateTodos() {
                         })}
                 />
             </div>
-
             <button className="text-white bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center h-fit self-end mb-2.5" type="submit">Create</button>
         </form>
     </main>
