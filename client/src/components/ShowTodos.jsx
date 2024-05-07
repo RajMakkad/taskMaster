@@ -30,7 +30,7 @@ export default function ShowTodos() {
                 task,
                 priority,
                 time,
-                status: true,
+                status: !status,
             });
             if (response.status == 200) {
                 return getTodos();
