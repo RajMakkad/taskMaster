@@ -9,19 +9,39 @@ export default function ShowTodos() {
     const getTodos = async () => {
         const response = await axios.get(`${api.list}`);
         const fetchedTodos = response.data.todo;
+        // const unMarkedTodos = fetchedTodos.filter(todo => !todo.status);
         // Use functional update to get the latest state
         setTodos(fetchedTodos);
     }
 
-    const deleteTask = async (e) => {
-        console.log(e.target);
-        const {id} = e.target;
+    const deleteTask = async (id) => {
+        console.log(id);
         const response = await axios.delete(`${api.delete}/${id}`)
         if(response.status == 200){
             return getTodos();
         }
         alert("Unable to delete the task because of some backend error");
     }; 
+
+    const markTask = async (todo) => {
+        try {
+            const { task, priority, time, status, _id } = todo;
+            const response = await axios.put(`${api.update}/${_id}`, {
+                task,
+                priority,
+                time,
+                status: true,
+            });
+            if (response.status == 200) {
+                return getTodos();
+            } else {
+                throw new Error("Failed to update task");
+            }
+        } catch (error) {
+            console.error("Error marking task as done:", error);
+            alert("Unable to mark the task as done due to a server error");
+        }
+    };
 
     // useEffect works as, whenever a option changes inside of the passed array ([option1, option2]) then the passed function will be executed.
     // When nothing is passed ([]) then the function will run only once at the time of mount, because nothing changes inside an empty array.
@@ -69,10 +89,10 @@ export default function ShowTodos() {
                                     <td className="px-6 py-4">
                                         {todo.time}
                                     </td>
-                                    <td className="px-6 py-4  cursor-pointer ">
+                                    <td className="px-6 py-4  cursor-pointer" onClick={(e) => markTask(todo)} >
                                         {todo.status ? "☑" : "☐"}
                                     </td>
-                                    <td className="px-6 py-4  cursor-pointer " onClick={deleteTask} id={todo._id}>
+                                    <td className="px-6 py-4  cursor-pointer" onClick={(e) => deleteTask(todo._id)} >
                                         ❌
                                     </td>
                                 </tr>

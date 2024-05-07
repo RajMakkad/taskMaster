@@ -51,35 +51,24 @@ router.delete("/deleteTodo/:id", async (req, res) => {
 router.put("/updateTodo/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const exists = await table.findOne({ _id: id });
-        if (!exists) {
-            alert("ID does not exist")
-            return res.status(404).end({ message: "This task is does not exist" });
+        const { task, priority, time, status } = req.body;
+
+        const todo = await table.findOneAndUpdate(
+            { _id: id },
+            { task, priority, time, status },
+            { new: true } // Returns the updated document
+        );
+
+        if (!todo) {
+            return res.status(404).json({ message: "Task not found." });
         }
 
-        const { todo, pritoriy, time, completed } = req.body;
-        exists = await table.findOne({ todo, pritoriy });
-        if (exists) {
-            return res.status(200).json({ message: "A similar entry is already present." })
-        }
-
-        table.findByIdAndUpdate(id, { todo, pritoriy, time, completed }, (err, todo) => {
-            if (err) {
-                return res.status(300).json({ message: "Failed to update an todo." })
-            }
-            console.log("updated a todo.")
-            res.status(200).json({
-                todo,
-                message: "Updated the todo."
-            })
-        })
+        res.status(200).json({ todo, message: "Todo updated successfully." });
     } catch (err) {
-        res.status(500).json({
-            message: "Some Error",
-            error: err
-        })
+        console.error("Error updating todo:", err);
+        res.status(500).json({ message: "Internal server error." });
     }
-})
+});
 
 // Read all the todos.
 router.get("/getAllTodos", async (req, res) => {
