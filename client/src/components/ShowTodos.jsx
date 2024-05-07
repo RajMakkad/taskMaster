@@ -13,6 +13,16 @@ export default function ShowTodos() {
         setTodos(fetchedTodos);
     }
 
+    const deleteTask = async (e) => {
+        console.log(e.target);
+        const {id} = e.target;
+        const response = await axios.delete(`${api.delete}/${id}`)
+        if(response.status == 200){
+            return getTodos();
+        }
+        alert("Unable to delete the task because of some backend error");
+    }; 
+
     // useEffect works as, whenever a option changes inside of the passed array ([option1, option2]) then the passed function will be executed.
     // When nothing is passed ([]) then the function will run only once at the time of mount, because nothing changes inside an empty array.
     useEffect(() => {
@@ -39,6 +49,9 @@ export default function ShowTodos() {
                         <th scope="col" className="px-6 py-3">
                             Mark as completed
                         </th>
+                        <th scope="col" className="px-6 py-3">
+                            Delete
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,8 +69,11 @@ export default function ShowTodos() {
                                     <td className="px-6 py-4">
                                         {todo.time}
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-6 py-4  cursor-pointer ">
                                         {todo.status ? "☑" : "☐"}
+                                    </td>
+                                    <td className="px-6 py-4  cursor-pointer " onClick={deleteTask} id={todo._id}>
+                                        ❌
                                     </td>
                                 </tr>
                             )
