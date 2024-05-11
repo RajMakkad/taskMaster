@@ -1,5 +1,7 @@
+import axios from "axios";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { api } from "../utils/Api";
 
 export default function SignIn() {
     const [credentials, setCredentials] = useState({
@@ -25,8 +27,18 @@ export default function SignIn() {
 
     }
 
-    const loginUser = () => {
-        navigate('/user/createTodo');
+    const loginUser = async () => {
+        try {
+            const user = await axios.post(`${api.signin}`, { username: credentials.username, password: credentials.password });
+            if (user.status == 200) {
+                navigate("/user/createTodo");
+            } else {
+                navigate("/error");
+            }
+        }
+        catch (err) {
+            navigate("/error");
+        }
     }
     return (
         <>
