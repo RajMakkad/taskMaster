@@ -87,5 +87,5 @@ router.get("/getAllTodos", async (req, res) => {
 })
 
 module.exports = {
-    router
+    taskRouter: router
 }

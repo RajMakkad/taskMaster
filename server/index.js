@@ -1,5 +1,6 @@
 const express = require("express");
-const {router} = require("./Routes/routes")
+const { taskRouter } = require("./Routes/routes");
+const { userRouter } = require("./Routes/user");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -10,10 +11,11 @@ const localhost = env.localhost;
 
 app.use(cors());
 app.use(express.json());
-app.use("/api", router);
+app.use("/api", taskRouter);
+app.use("/user", userRouter);
 
 app.get("/", (req, res) => {
-    res.status(200).json({message: "Hello, there!!"})
+    res.status(200).json({ message: "Hello, there!!" })
 })
 
 

@@ -6,7 +6,17 @@ const uri = env.mongodb_uri;
 
 mongoose.connect(uri);
 
+const userSchema = {
+    username: String,
+    password: String
+}
+
+
 const taskschema = {
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    },
     task: String,
     priority: String,
     time: String,
@@ -14,5 +24,9 @@ const taskschema = {
 }
 
 const table = mongoose.model("task", taskschema);
+const user = mongoose.model("user", userSchema);
 
-module.exports = table;
+module.exports = {
+    table,
+    user
+};
