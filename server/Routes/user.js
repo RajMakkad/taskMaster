@@ -32,7 +32,7 @@ router.post("/signin", (req, res) => {
         user.findOne({ username, password })
         .then(user => {
             if(!user)
-                return res.status(404).json({message: "User does not exists"});
+                return res.status(400).json({message: "User does not exists"});
             return res.status(200).json({ username, message: "User signed in succesfull" });
         })
         // .catch(err => res.status(404).json({message: "User does not exits", error: err}))
