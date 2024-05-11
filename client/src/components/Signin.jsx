@@ -37,7 +37,7 @@ export default function SignIn() {
             }
         }
         catch (err) {
-            navigate("/error");
+            navigate('/error', { state: { errorMessage : "SignIn Error"} });
         }
     }
     return (

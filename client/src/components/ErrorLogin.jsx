@@ -1,7 +1,12 @@
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
-export default function ErrorLogin({ errorMessage = "Error" }) {
+export default function ErrorLogin(
+    { errorMessage = "Error" }) {
     const navigate = useNavigate();
+    const { state } = useLocation();
+    if (state.errorMessage) {
+        errorMessage = state.errorMessage;
+    }
     // error related to API will be redirected to this page
     // use this page if cookies are not set to redirect
     return (
