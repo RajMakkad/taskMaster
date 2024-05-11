@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 
-export default function ErrorLogin() {
+export default function ErrorLogin({ ErrorMessage = "Error" }) {
 
     const navigate = useNavigate();
     // error related to API will be redirected to this page
@@ -9,7 +9,7 @@ export default function ErrorLogin() {
         <div className="h-screen bg-gray-400 flex flex-col justify-center items-center">
             <div className="bg-white rounded-xl p-5 pt-3">
                 <div className="font-bold text-3xl pb-3">
-                    Error
+                    {{ ErrorMessage }}
                 </div>
                 <div className="">
                     Please click on <span onClick={() => { navigate('/signin') }} className="hover:underline underline-offset-2">Signin</span>
