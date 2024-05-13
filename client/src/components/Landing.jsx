@@ -11,8 +11,6 @@ export default function Landing() {
             <Routes>
                 <Route path="/createTodo" element={<CreateTodos />} />
                 <Route path="/showTodo" element={<ShowTodos />} />
-                <Route path="/anotherShowTodo" element={<ShowTodos />} />
-                {/* default */}
                 <Route path="/user/*" element={<Navigate to="/user/createTodo" />} />
             </Routes>
         </div>

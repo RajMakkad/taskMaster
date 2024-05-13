@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const table = require("../Database/database");
+const { table } = require("../Database/database");
 
 // Create a todo.
 router.post("/createTodo", async (req, res) => {
@@ -11,7 +11,7 @@ router.post("/createTodo", async (req, res) => {
             alert("This task is already present")
             return res.status(404).json({ message: "This task is already present" });
         }
-        const newtodo = new table({ task, priority, time, status });
+        const newtodo = new table({ task, priority, time: Number(time), status });
         newtodo.save()
             .then((todo) => res.status(200).json({ todo, message: "New task added to the system." }))
             .catch(error => res.send(300).json({ message: "Failed to add the new task to the system." }))

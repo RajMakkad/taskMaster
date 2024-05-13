@@ -1,17 +1,31 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios"
-import { api } from "../utils/Api"
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { api } from "../utils/Api";
+import { parseTasks } from "../utils/Taskutils";
+
+// default rule: 0
+// 0: "All the tasks without any filtering",
+// 1: "All the incomplete tasks",
+// 2: "All the completed tasks",
+// 3: "All the incomplete task sort by priority",
+// 4: "All the incomplete task sort by time"
 
 export default function ShowTodos() {
     const [todos, setTodos] = useState([]);
     const useEffectOnce = useRef(false);
 
+    const { state } = useLocation();
+    let rule = 0;
+    if(state.rule){
+        rule = state.rule;
+    }
+
     const getTodos = async () => {
         const response = await axios.get(`${api.list}`);
         const fetchedTodos = response.data.todo;
-        // const unMarkedTodos = fetchedTodos.filter(todo => !todo.status);
-        // Use functional update to get the latest state
-        setTodos(fetchedTodos);
+        const parsedTodos = parseTasks[rule](fetchedTodos);
+        setTodos(parsedTodos);
     }
 
     const deleteTask = async (id) => {

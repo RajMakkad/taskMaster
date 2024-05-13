@@ -11,26 +11,54 @@ export default function Appbar() {
                             <li className="flex-grow">
                                 <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
                                     onClick={() => {
+                                        navigate('/user/showTodo', { state: { rule: 0 } });
+                                        window.location.reload();
+                                    }}>
+                                    Tasks
+                                </a>
+                            </li>
+                            <li className="flex-grow">
+                                <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                                    onClick={() => {
+                                        navigate('/user/showTodo', { state: { rule: 1 } });
+                                        window.location.reload();
+                                    }}>
+                                    Incomplete Tasks
+                                </a>
+                            </li>
+                            <li className="flex-grow">
+                                <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                                    onClick={() => {
+                                        navigate('/user/showTodo', { state: { rule: 2 } });
+                                        window.location.reload();
+                                    }}>
+                                    Completed Tasks
+                                </a>
+                            </li>
+                            <li className="flex-grow">
+                                <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                                    onClick={() => {
+                                        navigate('/user/showTodo', { state: { rule: 3 } });
+                                        window.location.reload();
+                                    }}>
+                                    Priority ⏬
+                                </a>
+                            </li>
+                            <li className="flex-grow">
+                                <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                                    onClick={() => {
+                                        navigate('/user/ShowTodo', { state: { rule: 4 } });
+                                        window.location.reload();
+                                    }}>
+                                    Time ⏬
+                                </a>
+                            </li>
+                            <li className="flex-grow">
+                                <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                                    onClick={() => {
                                         navigate('/user/createTodo')
                                     }}>
                                     Create New Task
-                                </a>
-                            </li>
-                            <li className="flex-grow">
-                                <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
-                                    onClick={() => {
-                                        navigate('/user/showTodo')
-                                    }}>
-                                    Sort by Priority
-                                </a>
-                            </li>
-                            {/* add link */}
-                            <li className="flex-grow">
-                                <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
-                                    onClick={() => {
-                                        navigate('/user/anotherShowTodo')
-                                    }}>
-                                    Sort by Time
                                 </a>
                             </li>
                         </ul>
