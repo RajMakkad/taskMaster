@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { user } = require("../Database/database");
+const jwt = require("jsonwebtoken");
+
+const env = process.env;
+const secret = env.secret;
 
 
 // create user
@@ -33,10 +37,11 @@ router.post("/signin", (req, res) => {
         .then(user => {
             if(!user)
                 return res.status(400).json({message: "User does not exists"});
-            return res.status(200).json({ username, message: "User signed in succesfull" });
+            
+            const token = jwt.sign(username, secret); // jwt-token, we can set expiration only when the payload is an object.
+            res.cookie("token", token);
+            return res.status(200).json({ username, token, message: "User signed in succesfull" });
         })
-        // .catch(err => res.status(404).json({message: "User does not exits", error: err}))
-        // return res.status(200).json({ username, message: "User signed in succesfull" });
     } catch (err) {
         res.status(500).json({
             message: "Some Error",
