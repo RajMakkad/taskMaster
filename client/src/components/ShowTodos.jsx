@@ -21,7 +21,8 @@ const taskHeader = [
 
 
 export default function ShowTodos() {
-    const [todos, setTodos] = useState([]);
+    const todos = useRef([]);
+    const [parsedtodos, setParsedTodos] = useState([]);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [taskToDelete, setTaskToDelete] = useState(null);
     const [cookies] = useCookies();
@@ -29,9 +30,8 @@ export default function ShowTodos() {
     const navigate = useNavigate();
     const token = cookies.token;
     const { state } = useLocation();
-    let flag = true;
 
-    const getTodos = async (ruletochange) => {
+    const getTodos = async () => {
         try {
             const response = await axios.get(`${api.list}`,
                 {
@@ -42,13 +42,18 @@ export default function ShowTodos() {
             );
             if (response.status == 200) {
                 const fetchedTodos = response.data.todo;
-                const parsedTodos = parseTasks[ruletochange](fetchedTodos);
-                setTodos(parsedTodos);
+                todos.current = fetchedTodos;
+                setParsedTodos(parseTasks[state?.rule || 0](fetchedTodos));
             }
         } catch (err) {
             console.log(err);
             navigate('/error', { state: { errorMessage: `${err?.response ? err?.response?.data?.message : err?.message}` } });
         }
+    }
+
+    const settingParsedTodos = (ruletochange) => {
+        const parsedTodos = parseTasks[ruletochange](todos.current);
+        setParsedTodos(parsedTodos);
     }
 
     const deleteTask = async (id) => {
@@ -62,7 +67,7 @@ export default function ShowTodos() {
             if (response.status == 200) {
                 setTaskToDelete(null);
                 setShowDeleteConfirmation(false);
-                return getTodos(state.rule);
+                return settingParsedTodos(state?.rule || 0);
             }
         } catch (err) {
             alert("Unable to delete the task because of some backend error");
@@ -102,7 +107,7 @@ export default function ShowTodos() {
                 }
             );
             if (response.status == 200) {
-                return getTodos(state.rule);
+                return settingParsedTodos(state?.rule || 0);
             }
         } catch (error) {
             console.error("Error marking task as done:", error);
@@ -131,14 +136,15 @@ export default function ShowTodos() {
 
     // useEffect works as, whenever a option changes inside of the passed array ([option1, option2]) then the passed function will be executed.
     // When nothing is passed ([]) then the function will run only once at the time of mount, because nothing changes inside an empty array.
+    let flag = true;
     useEffect(() => {
         if (useEffectOnce.current == false) {
-            getTodos(state?.rule || 0);
+            getTodos();
             flag = false;
             return () => { useEffectOnce.current = true; }
         }
-        if (state && flag) {
-            getTodos(state?.rule);
+        if(flag) {
+            settingParsedTodos(state?.rule || 0);
         }
     }, [state]);
 
@@ -175,8 +181,8 @@ export default function ShowTodos() {
                     </thead>
                     <tbody>
                         {
-                            todos?.length > 0 &&
-                            todos.map((todo) => {
+                            parsedtodos?.length > 0 &&
+                            parsedtodos.map((todo) => {
                                 return (
                                     <tr key={todo._id} className="bg-white border-b hover:bg-gray-100">
                                         <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
