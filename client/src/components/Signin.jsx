@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { api } from "../utils/Api";
 import Cookies from 'universal-cookie';
+import { useCookies } from 'react-cookie'
 
 export default function SignIn() {
     const [credentials, setCredentials] = useState({
@@ -10,6 +11,7 @@ export default function SignIn() {
         password: ""
     })
     const navigate = useNavigate();
+    const [cookies, setCookies, removeCookie] = useCookies();
 
     const onChangeUserName = (e) => {
         const { value } = e.target;
@@ -31,18 +33,17 @@ export default function SignIn() {
     const loginUser = async () => {
         try {
             const user = await axios.post(`${api.signin}`, { username: credentials.username, password: credentials.password });
-            const cookies = new Cookies();
             if (user.status == 200) {
                 const token = user.data.token;
-                cookies.set("token", token, { path: "/" }) 
+                setCookies("token", token, { path: "/" })
                 navigate("/user/createTodo");
             } else {
-                cookies.remove("token");
+                removeCookie("token");
                 navigate("/error");
             }
         }
         catch (err) {
-            navigate('/error', { state: { errorMessage : "SignIn Error"} });
+            navigate('/error', { state: { errorMessage: "SignIn Error" } });
         }
     }
     return (
