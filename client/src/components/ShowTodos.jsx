@@ -45,7 +45,7 @@ export default function ShowTodos() {
         setShowDeleteConfirmation((prevVal) => {
             return !prevVal
         });
-        if(id === -1){
+        if (id === -1) {
             setTaskToDelete(null);
         }
     }
@@ -81,6 +81,9 @@ export default function ShowTodos() {
 
     return (
         <>
+            <br />
+            <br />
+            <br />
             <div className="w-1/2 mx-auto relative">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 shadow-md rounded-lg">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
