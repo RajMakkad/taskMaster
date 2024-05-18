@@ -3,23 +3,22 @@ const router = express.Router();
 const { table, user } = require("../Database/database");
 const { verifyJWT } = require("../Middlewares/authorization");
 
-
+router.use(verifyJWT);
 // Create a todo.
-router.post("/createTodo", verifyJWT, async (req, res) => {
+router.post("/createTodo", async (req, res) => {
     try {
         const { task, priority, time, status } = req.body;
-        const username = req.username;
-        console.log(username);
+        const username = req.username.username;
         const exists = await table.findOne({ task, priority });
         if (exists) {
             return res.status(409).json({ message: "This task is already present" });
         }
-        const userObj = await user.findOne({ username }); 
+        const userObj = await user.findOne({ username });
         if (!userObj) {
             return res.status(404).json({ message: "The user does not exist." });
         }
         let newtodo = new table({ author: userObj, task, priority, time: Number(time), status });
-        newtodo.save() 
+        newtodo.save()
             .then((todo) => {
                 todo.author.password = undefined; // This wont show up at the front-end.
                 return res.status(200).json({ todo, message: "New task added to the system." })
@@ -27,7 +26,7 @@ router.post("/createTodo", verifyJWT, async (req, res) => {
             .catch(error => res.status(500).json({ message: "Failed to add the new task to the system." })); // Corrected status code
     } catch (err) {
         res.status(500).json({
-            message: "Some Error",
+            message: "Some Error With Create Todo",
             error: err
         });
     }
@@ -51,7 +50,7 @@ router.delete("/deleteTodo/:id", async (req, res) => {
             .catch(err => res.status(400).json({ message: "Failed to delete the task." }))
     } catch (err) {
         res.status(500).json({
-            message: "Some Error",
+            message: "Some Error with Delete Todo",
             error: err
         })
     }
@@ -90,7 +89,7 @@ router.get("/getAllTodos", async (req, res) => {
         })
     } catch (err) {
         res.status(500).json({
-            message: "Some Error",
+            message: "Some Error with Get Todo",
             error: err
         })
     }
