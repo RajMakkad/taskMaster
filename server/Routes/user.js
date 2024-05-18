@@ -34,14 +34,13 @@ router.post("/signin", (req, res) => {
     try {
         const { username, password } = req.body;
         user.findOne({ username, password })
-        .then(user => {
-            if(!user)
-                return res.status(400).json({message: "User does not exists"});
-            
-            const token = jwt.sign(username, secret); // jwt-token, we can set expiration only when the payload is an object.
-            res.cookie("token", token);
-            return res.status(200).json({ username, token, message: "User signed in succesfull" });
-        })
+            .then(user => {
+                if (!user)
+                    return res.status(400).json({ message: "User does not exists" });
+
+                const token = jwt.sign({ username }, secret); // jwt-token, we can set expiration only when the payload is an object.
+                return res.status(200).json({ username, token, message: "User signed in succesfull" });
+            })
     } catch (err) {
         res.status(500).json({
             message: "Some Error",

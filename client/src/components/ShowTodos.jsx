@@ -27,7 +27,7 @@ export default function ShowTodos() {
 
     const { state } = useLocation();
     let rule = 0;
-    if (state.rule) {
+    if (state && state.rule) {
         rule = state.rule;
     }
 
