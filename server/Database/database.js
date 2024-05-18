@@ -13,10 +13,10 @@ const userSchema = {
 
 
 const taskschema = {
-    // author: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "user"
-    // },
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    },
     task: String,
     priority: String,
     time: Number,

@@ -1,25 +1,35 @@
 const express = require("express");
 const router = express.Router();
-const { table } = require("../Database/database");
+const { table, user } = require("../Database/database");
+const { verifyJWT } = require("../Middlewares/authorization");
+
 
 // Create a todo.
-router.post("/createTodo", async (req, res) => {
+router.post("/createTodo", verifyJWT, async (req, res) => {
     try {
         const { task, priority, time, status } = req.body;
+        const username = req.username;
+        console.log(username);
         const exists = await table.findOne({ task, priority });
         if (exists) {
-            alert("This task is already present")
-            return res.status(404).json({ message: "This task is already present" });
+            return res.status(409).json({ message: "This task is already present" });
         }
-        const newtodo = new table({ task, priority, time: Number(time), status });
-        newtodo.save()
-            .then((todo) => res.status(200).json({ todo, message: "New task added to the system." }))
-            .catch(error => res.send(300).json({ message: "Failed to add the new task to the system." }))
+        const userObj = await user.findOne({ username }); 
+        if (!userObj) {
+            return res.status(404).json({ message: "The user does not exist." });
+        }
+        let newtodo = new table({ author: userObj, task, priority, time: Number(time), status });
+        newtodo.save() 
+            .then((todo) => {
+                todo.author.password = undefined; // This wont show up at the front-end.
+                return res.status(200).json({ todo, message: "New task added to the system." })
+            })
+            .catch(error => res.status(500).json({ message: "Failed to add the new task to the system." })); // Corrected status code
     } catch (err) {
         res.status(500).json({
             message: "Some Error",
             error: err
-        })
+        });
     }
 });
 
