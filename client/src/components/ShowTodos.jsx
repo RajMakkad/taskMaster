@@ -86,6 +86,9 @@ export default function ShowTodos() {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th scope="col" className="px-6 py-3">
+                                Author
+                            </th>
+                            <th scope="col" className="px-6 py-3">
                                 Task
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
@@ -109,6 +112,9 @@ export default function ShowTodos() {
                                 return (
                                     <tr key={todo._id} className="bg-white border-b hover:bg-gray-100">
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                            {todo.author?.username}
+                                        </th>
+                                        <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                             {todo.task}
                                         </th>
                                         <td className="px-6 py-4 text-center">

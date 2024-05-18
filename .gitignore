@@ -1,5 +1,6 @@
 Resources.md
 node_modules
+package-lock.json
 .env
 yarn.lock
 .vscode

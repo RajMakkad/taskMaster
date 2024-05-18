@@ -83,7 +83,7 @@ router.put("/updateTodo/:id", async (req, res) => {
 // Read all the todos.
 router.get("/getAllTodos", async (req, res) => {
     try {
-        const todo = await table.find({});
+        const todo = await table.find({}).populate('author').exec();
         res.status(200).json({
             todo,
             message: "All the todos"
