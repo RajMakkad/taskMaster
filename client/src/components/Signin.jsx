@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { api } from "../utils/Api";
-import Cookies from 'universal-cookie';
 import { useCookies } from 'react-cookie'
 
 export default function SignIn() {
