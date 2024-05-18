@@ -1,25 +1,33 @@
 import { useState } from "react"
 import { api } from "../utils/Api"
 import axios from "axios"
+import { useCookies } from 'react-cookie'
 
 export default function CreateTodos() {
     const [todos, setTodos] = useState([]);
-
+    const [cookies, setCookies, removeCookie] = useCookies();
     const [newTask, setNewTask] = useState({
         task: "",
         priority: "Low",
-        time: "",
+        time: 1,
         status: false
     });
 
     const CreateNewTask = async (e) => {
         e.preventDefault();
+        const token = cookies.token;
         const response = await axios.post(`${api.create}`, {
             task: newTask.task,
             priority: newTask.priority,
             time: newTask.time,
             status: newTask.status
-        });
+        }, 
+        {
+            headers: {
+                token
+            }
+        }
+    );
 
         const resp = response.data;
         setTodos([
@@ -29,12 +37,14 @@ export default function CreateTodos() {
         console.log(todos);
         setNewTask({
             task: "",
-            priority: "",
-            time: "",
+            priority: "Low",
+            time: 1,
             status: false
         });
         console.log(newTask);
     }
+
+    const timeArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
     return (
         <>
@@ -82,20 +92,20 @@ export default function CreateTodos() {
 
                     <div className="flex flex-col w-full">
                         <label htmlFor="timeInput" className="ml-3">Time</label>
-                        <input
-                            type="text"
+                        <select
                             name="timeInput"
                             id="timeInput"
                             value={newTask.time}
-                            placeholder="Time To Complete (in hrs)"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block text-ellipsis p-2 m-2"
                             required
-                            onChange={
-                                e => setNewTask({
-                                    ...newTask,
-                                    time: e.target.value
-                                })}
-                        />
+                            onChange={e => setNewTask({
+                                ...newTask,
+                                time: e.target.value
+                            })}
+                        >
+                            <option defaultChecked disabled>Set Time (Hours)</option>
+                            { timeArray.map((time, index) => <option key={index} value={time}>{time}</option>) }
+                        </select>
                     </div>
                     <button className="text-white bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center h-fit self-end mb-2.5" type="submit">Create</button>
                 </form>
