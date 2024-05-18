@@ -2,46 +2,53 @@ import { useState } from "react"
 import { api } from "../utils/Api"
 import axios from "axios"
 import { useCookies } from 'react-cookie'
+import { useNavigate } from "react-router-dom";
 
 export default function CreateTodos() {
-    const [todos, setTodos] = useState([]);
-    const [cookies, setCookies, removeCookie] = useCookies();
     const [newTask, setNewTask] = useState({
         task: "",
         priority: "Low",
         time: 1,
         status: false
     });
+    const navigate = useNavigate();
+    const [cookies] = useCookies();
 
     const CreateNewTask = async (e) => {
         e.preventDefault();
-        const token = cookies.token;
-        const response = await axios.post(`${api.create}`, {
-            task: newTask.task,
-            priority: newTask.priority,
-            time: newTask.time,
-            status: newTask.status
-        }, 
-        {
-            headers: {
-                token
+        try {
+            const token = cookies.token;
+            const response = await axios.post(`${api.create}`, {
+                task: newTask.task,
+                priority: newTask.priority,
+                time: newTask.time,
+                status: newTask.status
+            },
+                {
+                    headers: {
+                        token
+                    }
+                }
+            );
+            if (response.status == 200) {
+                const resp = response.data;
+                setNewTask({
+                    task: "",
+                    priority: "Low",
+                    time: 1,
+                    status: false
+                });
+                alert("Task is Created. Please Check Total Task")
+            }
+        } catch (err) {
+            console.log(err);
+            if (err?.response?.data?.message == "This task is already present") {
+                alert(err?.response?.data?.message)
+            } else {
+                navigate('/error', { state: { errorMessage: `${err?.response ? err?.response?.data?.message : err?.message}` } });
             }
         }
-    );
 
-        const resp = response.data;
-        setTodos([
-            ...todos,
-            resp.todo
-        ]);
-        console.log(todos);
-        setNewTask({
-            task: "",
-            priority: "Low",
-            time: 1,
-            status: false
-        });
-        console.log(newTask);
     }
 
     const timeArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -104,7 +111,7 @@ export default function CreateTodos() {
                             })}
                         >
                             <option defaultChecked disabled>Set Time (Hours)</option>
-                            { timeArray.map((time, index) => <option key={index} value={time}>{time}</option>) }
+                            {timeArray.map((time, index) => <option key={index} value={time}>{time}</option>)}
                         </select>
                     </div>
                     <button className="text-white bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center h-fit self-end mb-2.5" type="submit">Create</button>

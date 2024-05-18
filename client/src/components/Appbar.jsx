@@ -12,7 +12,7 @@ export default function Appbar() {
                             <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-nowrap cursor-pointer"
                                 onClick={() => {
                                     navigate('/user/showTodo', { state: { rule: 0 } });
-                                    window.location.reload();
+                                    // window.location.reload();
                                 }}>
                                 Total Tasks
                             </a>
@@ -29,7 +29,7 @@ export default function Appbar() {
                             <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-nowrap cursor-pointer"
                                 onClick={() => {
                                     navigate('/user/showTodo', { state: { rule: 1 } });
-                                    window.location.reload();
+                                    // window.location.reload();
                                 }}>
                                 Incomplete Tasks
                             </a>
@@ -38,7 +38,7 @@ export default function Appbar() {
                             <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-nowrap cursor-pointer"
                                 onClick={() => {
                                     navigate('/user/showTodo', { state: { rule: 2 } });
-                                    window.location.reload();
+                                    // window.location.reload();
                                 }}>
                                 Completed Tasks
                             </a>
@@ -47,7 +47,7 @@ export default function Appbar() {
                             <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-nowrap cursor-pointer"
                                 onClick={() => {
                                     navigate('/user/showTodo', { state: { rule: 3 } });
-                                    window.location.reload();
+                                    // window.location.reload();
                                 }}>
                                 Sort by Priority
                             </a>
@@ -56,7 +56,7 @@ export default function Appbar() {
                             <a className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 text-nowrap cursor-pointer"
                                 onClick={() => {
                                     navigate('/user/ShowTodo', { state: { rule: 4 } });
-                                    window.location.reload();
+                                    // window.location.reload();
                                 }}>
                                 Sort by Time
                             </a>

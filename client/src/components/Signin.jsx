@@ -39,13 +39,11 @@ export default function SignIn() {
                 setCookies("token", token, { path: "/" })
                 navigate("/user/createTodo");
                 setLoader(false);
-            } else {
-                removeCookie("token");
-                navigate("/error");
-            }
+            } 
         }
         catch (err) {
-            navigate('/error', { state: { errorMessage: "SignIn Error" } });
+            console.log(err);
+            navigate('/error', { state: { errorMessage: `${err?.response ? err?.response?.data?.message : err?.message}` } });
         }
     }
     return (

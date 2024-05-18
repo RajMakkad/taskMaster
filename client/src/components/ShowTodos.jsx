@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api } from "../utils/Api";
 import { parseTasks } from "../utils/Taskutils";
+import { useCookies } from "react-cookie";
 
 // default rule: 0
 // 0: "All the tasks without any filtering",
@@ -23,38 +24,65 @@ export default function ShowTodos() {
     const [todos, setTodos] = useState([]);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [taskToDelete, setTaskToDelete] = useState(null);
+    const [cookies] = useCookies();
     const useEffectOnce = useRef(false);
-
+    const navigate = useNavigate();
+    const token = cookies.token;
     const { state } = useLocation();
-    let rule = 0;
-    if (state && state.rule) {
-        rule = state.rule;
-    }
+    let flag = true;
 
-    const getTodos = async () => {
-        const response = await axios.get(`${api.list}`);
-        const fetchedTodos = response.data.todo;
-        const parsedTodos = parseTasks[rule](fetchedTodos);
-        setTodos(parsedTodos);
+    const getTodos = async (ruletochange) => {
+        try {
+            const response = await axios.get(`${api.list}`,
+                {
+                    headers: {
+                        token
+                    }
+                }
+            );
+            if (response.status == 200) {
+                const fetchedTodos = response.data.todo;
+                const parsedTodos = parseTasks[ruletochange](fetchedTodos);
+                setTodos(parsedTodos);
+            }
+        } catch (err) {
+            console.log(err);
+            navigate('/error', { state: { errorMessage: `${err?.response ? err?.response?.data?.message : err?.message}` } });
+        }
     }
 
     const deleteTask = async (id) => {
-        const response = await axios.delete(`${api.delete}/${id}`)
-        if (response.status == 200) {
-            setTaskToDelete(null);
-            setShowDeleteConfirmation(false);
-            return getTodos();
+        try {
+            const response = await axios.delete(`${api.delete}/${id}`,
+                {
+                    headers: {
+                        token
+                    }
+                })
+            if (response.status == 200) {
+                setTaskToDelete(null);
+                setShowDeleteConfirmation(false);
+                return getTodos();
+            }
+        } catch (err) {
+            alert("Unable to delete the task because of some backend error");
+            console.log(err);
+            navigate('/error', { state: { errorMessage: `${err?.response ? err?.response?.data?.message : err?.message}` } });
         }
-        alert("Unable to delete the task because of some backend error");
     };
 
     const deleteConfirmation = (id) => {
-        setTaskToDelete(id);
-        setShowDeleteConfirmation((prevVal) => {
-            return !prevVal
-        });
-        if (id === -1) {
-            setTaskToDelete(null);
+        try {
+            setTaskToDelete(id);
+            setShowDeleteConfirmation((prevVal) => {
+                return !prevVal
+            });
+            if (id === -1) {
+                setTaskToDelete(null);
+            }
+        } catch (err) {
+            console.log(err);
+            navigate('/error', { state: { errorMessage: `${err?.response ? err?.response?.data?.message : err?.message}` } });
         }
     }
 
@@ -66,15 +94,19 @@ export default function ShowTodos() {
                 priority,
                 time,
                 status: !status,
-            });
+            },
+                {
+                    headers: {
+                        token
+                    }
+                }
+            );
             if (response.status == 200) {
                 return getTodos();
-            } else {
-                throw new Error("Failed to update task");
             }
         } catch (error) {
             console.error("Error marking task as done:", error);
-            alert("Unable to mark the task as done due to a server error");
+            navigate('/error', { state: { errorMessage: `${err?.response ? err?.response?.data?.message : err?.message}` } });
         }
     };
 
@@ -97,15 +129,18 @@ export default function ShowTodos() {
         </div>
     );
 
-
     // useEffect works as, whenever a option changes inside of the passed array ([option1, option2]) then the passed function will be executed.
     // When nothing is passed ([]) then the function will run only once at the time of mount, because nothing changes inside an empty array.
     useEffect(() => {
         if (useEffectOnce.current == false) {
-            getTodos();
-            return () => { useEffectOnce.current = true }
+            getTodos(state?.rule || 0);
+            flag = false;
+            return () => { useEffectOnce.current = true; }
         }
-    }, []);
+        if (state && flag) {
+            getTodos(state?.rule);
+        }
+    }, [state]);
 
     return (
         <>
