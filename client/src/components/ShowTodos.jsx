@@ -62,7 +62,7 @@ export default function ShowTodos() {
             if (response.status == 200) {
                 setTaskToDelete(null);
                 setShowDeleteConfirmation(false);
-                return getTodos();
+                return getTodos(state.rule);
             }
         } catch (err) {
             alert("Unable to delete the task because of some backend error");
@@ -102,7 +102,7 @@ export default function ShowTodos() {
                 }
             );
             if (response.status == 200) {
-                return getTodos();
+                return getTodos(state.rule);
             }
         } catch (error) {
             console.error("Error marking task as done:", error);
