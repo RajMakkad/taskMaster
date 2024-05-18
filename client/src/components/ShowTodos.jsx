@@ -11,6 +11,14 @@ import { parseTasks } from "../utils/Taskutils";
 // 3: "All the incomplete task sort by priority",
 // 4: "All the incomplete task sort by time"
 
+const taskHeader = [
+    "Total Tasks",
+    "Imcomplete Task",
+    "Completed Task",
+    "Task Sorted by Priority",
+    "Task Sorted by Time",]
+
+
 export default function ShowTodos() {
     const [todos, setTodos] = useState([]);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -85,14 +93,17 @@ export default function ShowTodos() {
             <br />
             <br />
             <div className="w-1/2 mx-auto relative">
+                <div className="text-4xl text-center font-semibold pb-5">
+                    {taskHeader[state?.rule]}
+                </div>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 shadow-md rounded-lg">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th scope="col" className="px-6 py-3">
-                                Author
+                                Task
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Task
+                                Author
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
                                 Priority
@@ -114,11 +125,11 @@ export default function ShowTodos() {
                             todos.map((todo) => {
                                 return (
                                     <tr key={todo._id} className="bg-white border-b hover:bg-gray-100">
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            {todo.author?.username}
-                                        </th>
                                         <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                             {todo.task}
+                                        </th>
+                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                            {todo.author?.username}
                                         </th>
                                         <td className="px-6 py-4 text-center">
                                             {todo.priority}
@@ -129,8 +140,10 @@ export default function ShowTodos() {
                                         <td className="px-2 py-4  cursor-pointer hover:bg-gray-200 text-center" onClick={(e) => markTask(todo)} >
                                             {todo.status ? "☑" : "☐"}
                                         </td>
-                                        <td className="px-6 py-4  cursor-pointer hover:bg-gray-200 text-center" onClick={(e) => deleteConfirmation(todo._id)} >
-                                            ❌
+                                        <td className="px-6 py-4  cursor-pointer hover:bg-red-200 text-center" onClick={(e) => deleteConfirmation(todo._id)} >
+                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="27" height="20" viewBox="0 0 24 24">
+                                                <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z"></path>
+                                            </svg>
                                         </td>
                                     </tr>
                                 )
