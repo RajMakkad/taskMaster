@@ -8,7 +8,8 @@ export default function SignIn() {
     const [credentials, setCredentials] = useState({
         username: "",
         password: ""
-    })
+    });
+    const [loader, setLoader] = useState(false);
     const navigate = useNavigate();
     const [cookies, setCookies, removeCookie] = useCookies();
 
@@ -30,12 +31,14 @@ export default function SignIn() {
     }
 
     const loginUser = async () => {
+        setLoader(true);
         try {
             const user = await axios.post(`${api.signin}`, { username: credentials.username, password: credentials.password });
             if (user.status == 200) {
                 const token = user.data.token;
                 setCookies("token", token, { path: "/" })
                 navigate("/user/createTodo");
+                setLoader(false);
             } else {
                 removeCookie("token");
                 navigate("/error");
@@ -47,9 +50,12 @@ export default function SignIn() {
     }
     return (
         <>
-            <div className="flex justify-center items-center h-screen flex-col bg-gray-400">
-                <div className="bg-gray-200 rounded-xl p-10 flex flex-col">
-                    <div className="font-bold text-2xl">
+            <div className="flex justify-center items-center h-screen flex-col bg-gray-300">
+                <div className="text-6xl font-semibold pb-28">
+                    Welcome to TaskMaster
+                </div>
+                <div className="bg-gray-200 rounded-xl pt-8 p-10 flex flex-col shadow-2xl">
+                    <div className="font-semibold text-2xl">
                         Enter your Details
                     </div>
                     <div className="flex flex-col pt-3">
@@ -60,8 +66,13 @@ export default function SignIn() {
                         <label className="text-lg pb-0.5 pl-1 font-medium">Password</label>
                         <input onChange={onChangePassword} value={credentials.password} className="pl-2 p-0.5 border-2 border-black rounded-md" type="password" id="password" />
                     </div>
-                    <button onClick={loginUser} className="px-3 py-2 text-sm font-medium text-center text-white bg-gray-600 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300">
-                        Login
+                    <button onClick={loginUser} disabled={loader} className={`px-3 py-2 text-sm font-medium text-center text-white  rounded-lg focus:ring-4 focus:outline-none focus:ring-gray-300 ${loader ? `bg-gray-500` : `bg-gray-600 hover:bg-gray-800`}`}>
+                        {loader ? (
+                            <div className="flex justify-center">
+                                <div className="h-5 w-5 rounded-full animate-spin border-4 border-t-gray-600 mr-2" />
+                                Processing...
+                            </div>
+                        ) : "Login"}
                     </button>
                 </div>
             </div>
