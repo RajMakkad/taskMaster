@@ -1,6 +1,6 @@
 # TaskMaster 
 
-## Description:
+### Description:
 This is not just a task completion app but an efficient task management application designed to help you manage your tasks more effectively.
 
 ### Features:
@@ -16,21 +16,21 @@ This is not just a task completion app but an efficient task management applicat
 # Installation:
 
 - Clone the repository: git clone https://github.com/RajMakkad/taskMaster
-- Navigate to the project directory: cd taskMaster
+- Navigate to the project directory: `cd taskMaster`
 
 1.Steps to run the backend
-  - open the server side which is built on node and express : cd server
-  - Install dependencies: npm install
-  - Create a .env file which will have ** mongodb_uri, localhost, port, secret ** in it with required values. 
-  - Run the Backend : npm run dev
+  - open the server side which is built on _Node_ and _Express_ : `cd server`
+  - Install dependencies: `npm install`
+  - Create a .env file which will have **mongodb_uri, localhost, port, secret** in it with required values. 
+  - Run the Backend : `npm run dev`
 
-2. Steps to run the Frontend
-  - open the server side which is built on Reactjs and Tailwind. : cd client
-  - Install dependencies: npm install
-  - Run the Backend : npm run dev
+2.Steps to run the Frontend
+  - open the server side which is built on _Reactjs_ and _Tailwind_. : `cd client`
+  - Install dependencies: `npm install`
+  - Run the Backend : `npm run dev`
 
 # Usage:
   - In this Application we can SignIn with a user and password. which is protected with JWT token.
-  - Here we can create a task with ** Task Name ** , ** Task Priority ** and we can also assign the ** Time  ** to the task.
+  - Here we can create a task with **Task Name** , **Task Priority** and we can also assign the **Time** to the task.
   - Here all the routes are protected so a user can not login from different if they haven't Signed In there.
   - The NavBar at the top have different view of the Tasks . which will help the user to decide the task needed to be completed first accroding to time and priority.
